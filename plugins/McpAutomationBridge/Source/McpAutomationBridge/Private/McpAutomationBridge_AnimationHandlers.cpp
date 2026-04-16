@@ -221,6 +221,14 @@ PRAGMA_ENABLE_DEPRECATION_WARNINGS
 #define MCP_HAS_VEHICLE_WHEEL 0
 #endif
 
+// -----------------------------------------------------------------------------
+// UE 5.4.x Bug Fix: UHeightfieldReadbackComponent Forward Declaration
+// -----------------------------------------------------------------------------
+// UE 5.4.x ChaosWheeledVehicleMovementComponent.h references UHeightfieldReadbackComponent
+// but the header is not included. Add forward declaration to fix compile error.
+// This is a known engine issue that was fixed in later UE versions.
+class UHeightfieldReadbackComponent;
+
 #if __has_include("ChaosWheeledVehicleMovementComponent.h")
 #include "ChaosWheeledVehicleMovementComponent.h"
 #define MCP_HAS_CHAOS_WHEELED_VEHICLE 1

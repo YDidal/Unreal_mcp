@@ -1131,7 +1131,13 @@ Response->SetBoolField(TEXT("success"), true);
         
         // Use PreEditChange/PostEditChange for proper texture property modification lifecycle
         Texture->PreEditChange(nullptr);
+        // UE 5.1+: LODBias is FPerPlatformInt struct with Default member
+        // UE 5.0: LODBias is int32, direct assignment works
+#if ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION >= 1
+        Texture->LODBias.Default = LODBias;
+#else
         Texture->LODBias = LODBias;
+#endif
         Texture->PostEditChange();
         Texture->UpdateResource();
         Texture->MarkPackageDirty();
@@ -1300,7 +1306,13 @@ Response->SetBoolField(TEXT("success"), true);
         TextureInfo->SetBoolField(TEXT("sRGB"), Texture->SRGB);
         TextureInfo->SetBoolField(TEXT("virtualTextureStreaming"), Texture->VirtualTextureStreaming);
         TextureInfo->SetBoolField(TEXT("neverStream"), Texture->NeverStream);
+        // UE 5.1+: LODBias is FPerPlatformInt, need to use GetDefault()
+        // UE 5.0: LODBias is int32, direct access works
+#if ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION >= 1
+        TextureInfo->SetNumberField(TEXT("lodBias"), Texture->LODBias.GetDefault());
+#else
         TextureInfo->SetNumberField(TEXT("lodBias"), Texture->LODBias);
+#endif
         
         // Compression settings as string
         FString CompressionStr;
