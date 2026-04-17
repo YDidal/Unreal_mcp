@@ -364,11 +364,14 @@ export async function handleBlueprintTools(action: string, args: HandlerArgs, to
       return cleanObject(res);
     }
     case 'set_scs_property': {
+      // Support both 'value' and 'propertyValue' (consistent with set_default behavior)
+      const propValue = argsRecord.value ?? argsRecord.propertyValue;
       const res = await executeAutomationRequest(tools, 'set_scs_component_property', {
         blueprint_path: argsTyped.name || argsTyped.blueprintPath || (argsRecord.path as string) || '',
         component_name: argsTyped.componentName ?? '',
         property_name: argsTyped.propertyName ?? '',
-        property_value: JSON.stringify({ value: argsRecord.propertyValue }),
+        // Pass value directly so arrays/objects are preserved as JSON types
+        property_value: propValue,
         timeoutMs: argsRecord.timeoutMs as number | undefined
       }) as Record<string, unknown>;
       return cleanObject(res);
