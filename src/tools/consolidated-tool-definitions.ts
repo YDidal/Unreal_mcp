@@ -197,7 +197,7 @@ export const consolidatedToolDefinitions: ToolDefinition[] = [
         },
         name: commonSchemas.name,
         blueprintPath: commonSchemas.blueprintPath,
-        blueprintType: commonSchemas.parentClass,
+        blueprintType: { type: 'string', description: 'Blueprint type (e.g., Actor, Character, Pawn).' },
         savePath: commonSchemas.savePath,
         componentType: commonSchemas.stringProp,
         componentName: commonSchemas.componentName,
